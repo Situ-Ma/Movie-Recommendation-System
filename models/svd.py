@@ -39,16 +39,16 @@ def matrix_factorization(ratings, k, steps, alpha, beta):
         
     return np.dot(U, V)
 
-# Recommendation: ranking of movies for user
-def predict_ranking(user, movie):
-           uidx = users.index(user)
-           midx = movies.index(movie)
-           return model[uidx, midx]
+# # Recommendation: ranking of movies for user
+# def predict_ranking(user, movie):
+#            uidx = users.index(user)
+#            midx = movies.index(movie)
+#            return model[uidx, midx]
 
-# recommendation: return six highest rating movies
-def top_rated(user, n=6):
-    movies = [(mid, predict_ranking(user, mid)) for mid in movies]
-        return heapq.nlargest(n, movies, key=itemgetter(1))
+# # recommendation: return six highest rating movies
+# def top_rated(user, n=6):
+#     movies = [(mid, predict_ranking(user, mid)) for mid in movies]
+#         return heapq.nlargest(n, movies, key=itemgetter(1))
 
 def main():
     # Load train dataset
