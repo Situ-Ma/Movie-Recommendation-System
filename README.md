@@ -1,5 +1,7 @@
 # Movie-Recommendation-System
 
+Language: Python 3.6
+
 Predicted using different training models
 - linear regression
 - random forest
