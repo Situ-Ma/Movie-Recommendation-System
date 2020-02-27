@@ -8,4 +8,5 @@ Predicted using different training models
 - collaborative filtering
 - svd
 
-Final prediction result calculated by ensembling all prediction results
+Final prediction result calculated by ensembling all prediction results.
+Best Machine Learning Project winner
