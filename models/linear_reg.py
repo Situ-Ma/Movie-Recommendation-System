@@ -5,9 +5,13 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 
+
+#  Load data from CSV files to the in-memory database
+
+
 # class Data:
 #     def __init__(self):
-#         # Load data from CSV files to the in-memory database
+#         
 #         self.engine = create_engine('sqlite://', echo=False)
         
 #         filenames = [
@@ -25,6 +29,10 @@ from math import sqrt
 # data = Data()
 # print(data.engine.execute('SELECT * from movies').fetchone())
 
+
+
+# Process Data
+
 train_ratings = pd.read_csv('../data/train_ratings.csv')
 movies = pd.read_csv('../data/movies.csv')
 val_rating = pd.read_csv('../data/val_ratings.csv')
@@ -38,7 +46,13 @@ if '(no genres listed)' in all_train_df.columns:
     all_train_df = all_train_df.drop([ 'userId', 'movieId', 'title', '(no genres listed)'], axis=1)
 else:
     all_train_df = all_train_df.drop([ 'userId', 'movieId', 'title'], axis=1)
-#train_df = train_df[train_df['userId'] == 1]
+
+
+
+# Train Model
+
+
+# train_df = train_df[train_df['userId'] == 1]
 
 # print("start training...")
 
@@ -57,8 +71,15 @@ else:
 # Get the training dataset
 train_y = all_train_df['rating']
 train_X = all_train_df.drop('rating', axis=1)
-# print(train_X)
-# print(train_y)
+
+print("start training...")
+
+# Train the linear model
+reg = LinearRegression().fit(train_X, train_y)
+print('Fitted coefficients: ', reg.coef_)
+
+######################################################
+# Validation/Test Model
 
 # Get the validation dataset
 # val_ratings = pd.read_csv('../data/test_ratings.csv')
@@ -74,12 +95,6 @@ train_X = all_train_df.drop('rating', axis=1)
 # print(val_X)
 # print(val_y)
 
-print("start training...")
-
-# Train the linear model
-reg = LinearRegression().fit(train_X, train_y)
-print('Fitted coefficients: ', reg.coef_)
-
 test_df = pd.read_csv('../data/test_ratings.csv')
 test_df = pd.merge(test_df, movies, on='movieId', how='left')
 test_df = pd.concat([test_df.drop('genres', axis=1), test_df['genres'].str.get_dummies(sep='|')], axis=1)
@@ -89,12 +104,20 @@ if '(no genres listed)' in test_df.columns:
 else:
     test_df = test_df.drop(['Id','userId', 'movieId', 'title'], axis=1)
 
+
+
+# Output
+
 # save results to compare models
 pred_y = reg.predict(test_df)
 df = pd.DataFrame(pred_y, columns=["rating"])
 df.to_csv('../data/lreg.csv', index_label = 'Id')
 # rms = sqrt(mean_squared_error(val_y, pred_y))
 # print('RMSE: ', rms)
+
+######################################################
+# Results
+######################################################
 
 # Fitted coefficients:  [-3.45982143e-02 -5.50223214e-01  2.77555756e-17 -3.33066907e-16
 #  -2.44866071e-01 -1.34263393e+00 -2.22044605e-16  8.65625000e-01
